@@ -1,0 +1,11 @@
+There are 4 python files:
+1. Preprocess.py :  contains all preprocessing functions
+2. Lstm.py : run this to train lstm and predict
+3. valenceshifters.py : contains algorithm to score sentences
+4. Analysis.py : contains code for query builder and analyser using wordcloud
+
+HappyDB contains 2 data files:-
+1. Cleaned_hm :- Contains hmid (happy moment id), wid (worker's id), reflection_period, original_hm, 
+leaned_hm, num_sentence, ground_truth_category, predicted category.
+2. Demographic.csv :- Contains information about worker like age, country,gender, marital, parenthood 
+

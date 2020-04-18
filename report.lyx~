@@ -1,0 +1,1079 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Analysis of Happy Moments
+\end_layout
+
+\begin_layout Author
+Akshat Choube
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+111501031, CSE IIT PKD
+\end_layout
+
+\end_inset
+
+, Harsh Yadav
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+111501009, CSE IIT PKD
+\end_layout
+
+\end_inset
+
+, Chirag
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+101501011, CE IIT PKD
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+We present a model that when given a paragraph, categorizes it into one
+ of the chosen seven categories of happiness.
+ Furthermore, every paragraph/sentence is given a happiness index based
+ on how much relatively positive it is.
+ Since the traditional techniques of scoring a sentence as a sum of score
+ of every word in the sentence is inefficient, we’d need NLP techniques
+ such as Parts of Speech and Contextual Valence Shifting to do the same.
+ In addition to it, we analyze the dataset further to find main reasons
+ behind happiness in people of different age, sex, marital status, nationality,
+ etc.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Motivation 
+\end_layout
+
+\begin_layout Standard
+To psychological researchers, happiness is life experience marked by a preponder
+ance of positive emotion.
+ Feelings of happiness and thoughts of satisfaction with life are two prime
+ components of subjective well-being (SWB).
+ Thus, understanding true source or reasons of happiness is an interesting
+ and useful task.
+ Understanding happiness is not straightforward, rather it highly depends
+ on past experience of an individual, but there are some commonalities between
+ happiness similar group can be extracted out.
+ Understanding happiness will help us to build applications that makes people
+ happy.
+ Another important task is to score positivity or negativity of a sentence
+ using some scoring criteria.
+ Assigning scores to a sentence can help us figure out from public data
+ like tweets and posts, the writer’s subjective opinion and/or state of
+ mind while writing it.
+ This information is pretty useful in applications such as movie reviews,
+ etc.
+ Categorizing happy moments helps us to better understand their source.
+ Thus happiness is something we all seek and is important to know its basic
+ cause and reasons.
+\end_layout
+
+\begin_layout Section
+Problem Formulation 
+\end_layout
+
+\begin_layout Standard
+The science of happiness is an area of positive psychology concerned with
+ understanding what behaviors make people happy in a sustainable fashion.
+ We want to build a model which would give us a clear and better understanding
+ of how people express their happy moments.
+ To achieve this, we are using a dataset named HappyDB, a corpus of 100,000
+ happy moments.
+ The dataset contains answers to the queries that correlate happy moments
+ with the past history i.e what made people happy in the past 24 hours or
+ alternatively, past 3 months.
+ HappyDB also contains information about demographic characteristics of
+ the person such as age, marital status, nationality etc.
+ 
+\end_layout
+
+\begin_layout Standard
+Three main tasks we plan to accomplish in this project are:
+\end_layout
+
+\begin_layout Enumerate
+Analyzing happy Moments among people of different age groups, sex, nationality
+ etc.
+ and understanding their source of happiness.
+\end_layout
+
+\begin_layout Enumerate
+Categorize each happy moment into these listed categories:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Achievement 
+\end_layout
+
+\begin_layout Enumerate
+Affection
+\end_layout
+
+\begin_layout Enumerate
+Bonding 
+\end_layout
+
+\begin_layout Enumerate
+Enjoying the moment 
+\end_layout
+
+\begin_layout Enumerate
+Exercise 
+\end_layout
+
+\begin_layout Enumerate
+Leisure 
+\end_layout
+
+\begin_layout Enumerate
+Nature
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Building a heuristics to score positivity or negativity of a sentence.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We show steps taken for accomplishing aforementioned tasks in following
+ sections.
+\end_layout
+
+\begin_layout Section
+Algorithms/Models
+\end_layout
+
+\begin_layout Subsection
+Analyzing Source of Happiness among people of different age, sex, nationality
+ etc.
+\end_layout
+
+\begin_layout Standard
+Demographic.csv file contains demographic information about workers like
+ their age, sex, marital status etc.
+ which is used to get desired subset of population.
+ We then look into their happy moments and collect most frequent words occurring
+ in them.Then we visualize and analyze the results by making a word cloud.
+ We have build a query builder using which we can query our data based on
+ demographic or happiness information and get desired word cloud.
+ for example What things make an Indian happy whose age is between 18 to
+ 25 and happiness category is affection.
+\end_layout
+
+\begin_layout Subsection
+Categorizing Happy Moments
+\end_layout
+
+\begin_layout Standard
+We trained a Long Short Term Memory (LSTM) for categorizing happy moments
+ to seven categories mentioned below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename categories.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We chose LSTM because unlike algorithm involving Bag of words which ignores
+ semantics of words and loose ordering of words whereas LSTM considers it.
+ To convert happy moment 
+\begin_inset Formula $h$
+\end_inset
+
+ to input layer 
+\begin_inset Formula $x$
+\end_inset
+
+ we need to get a sequence of words into vector representation 
+\begin_inset Formula $x$
+\end_inset
+
+ to feed it as the input layer to the network.
+ This is done in the following way:
+\end_layout
+
+\begin_layout Itemize
+Each happy moment (set of sentences) is represented by a integer vector
+ which is frequencies of corresponding words of sentences in a corpus consisting
+ of all happy moments.
+\end_layout
+
+\begin_layout Itemize
+An embedding layer projects each of the these vectors into a d-dimensional
+ continuous vector space.
+ This is done by multiplying the these vector from left with weight matrix
+ 
+\begin_inset Formula $W∈R^{dlvl}$
+\end_inset
+
+ .
+ Where: 
+\begin_inset Formula $|V|$
+\end_inset
+
+ is the number of unique words in vocabulary 
+\begin_inset Formula $e_{t}=WX_{t}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+After the embedding layer, the input sequence of vectors becomes a sequence
+ of dense, real valued vectors 
+\begin_inset Formula $(e_{1},e_{2},...,e_{T})$
+\end_inset
+
+ .
+ 
+\end_layout
+
+\begin_layout Itemize
+Output 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ for each happy moment sis represented as one hot vector eg.
+ 
+\begin_inset Formula $[1,0,0,0,0,0,0]$
+\end_inset
+
+ denotes achievement.
+ 
+\end_layout
+
+\begin_layout Standard
+After embedding layer we can add LSTM layer with many memory units and then
+ the softmax output layer.
+ Recurrent Neural networks like LSTM generally have the problem of overfitting.
+ Dropout can be applied between layers using the Dropout layer to tackle
+ vanishing gradient problem.
+\end_layout
+
+\begin_layout Subsection
+Assigning a score to each happy moment
+\end_layout
+
+\begin_layout Subsubsection
+Naive Model : 
+\end_layout
+
+\begin_layout Standard
+The initial understanding of assigning a happiness index to a sentence was
+ only the difference between the positive and negative score of each word.
+ 
+\end_layout
+
+\begin_layout Standard
+The Algorithm is as under : 
+\end_layout
+
+\begin_layout Enumerate
+Given a sentence, preprocess it to find the tokens in the sentence.
+ 
+\end_layout
+
+\begin_layout Enumerate
+For each word in tokens 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Positive score = average positive score of all words in its synset.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Negative score = average negative score of all words in its synset.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Net score = positive score - negative score / length of sentence 
+\end_layout
+
+\begin_layout Subsubsection
+Final Model
+\end_layout
+
+\begin_layout Standard
+The initial algorithm worked for elementary and straightforward sentences.
+ However, the fact that a positive sentence may not only contain positive
+ words and vice versa made us think otherwise.
+ For example, consider following sentences:
+\end_layout
+
+\begin_layout Enumerate
+It was a happy day for me because I excelled in a test.
+ (This sentence is straightforward and would be scored correctly by naive
+ model)
+\end_layout
+
+\begin_layout Enumerate
+John is not good.
+ (This would be scored as positive sentence by naive model as good has a
+ high positive value)
+\end_layout
+
+\begin_layout Standard
+The Final model includes concept of valence shifters and thus does not suffer
+ from above mentioned anomaly.
+ The Algorithm is as follows
+\end_layout
+
+\begin_layout Enumerate
+Given a sentence, preprocess it to find the tokens in the sentence.
+\end_layout
+
+\begin_layout Enumerate
+Using POS tagging mechanism, tag every token as a part of speech.
+\end_layout
+
+\begin_layout Enumerate
+Filter tokens that have a non-zero sentiwordnet score, have POS tag in [noun,
+ verb, adverb, coordinating conjunction] or belongs to contextual valence
+ shifter family.
+ 
+\end_layout
+
+\begin_layout Enumerate
+For each word in tokens 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Positive score = average positive score of all words in its synset.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Negative score = average negative score of all words in its synset.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+For each word in tokens 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+If word is presuppositional 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Flip the score of the next word with non-zero score.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If word is a connector 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Edit the score of all the tokens before this word to zero 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If word is negative 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Flip the score of the next word with non-zero score.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+If word is intensifier 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Multiplies the score of the next word with 1.5 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Score of the sentence = sum (score of tokens) / number of tokens 
+\end_layout
+
+\begin_layout Section
+Implementation and Results:
+\end_layout
+
+\begin_layout Subsection
+Data Set 
+\end_layout
+
+\begin_layout Standard
+HappyDB dataset contains two files 
+\end_layout
+
+\begin_layout Enumerate
+Cleaned_hm :- Contains hmid (happy moment id), wid (worker’s id), reflection_per
+iod, original_hm, cleaned_hm, num_sentence, ground_truth_category, predicted
+ category.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename cleaned_dataset_example.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Demographic.csv :- Contains information about worker like age, country, gender,
+ marital, parenthood.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename demographic_data.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Preprocessing of data:
+\end_layout
+
+\begin_layout Enumerate
+Cleansing:- HappyDB already contains cleaned version of data.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Text Processing:- 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Tokenize 
+\end_layout
+
+\begin_layout Enumerate
+Transform to lowercase 
+\end_layout
+
+\begin_layout Enumerate
+Stemming 
+\end_layout
+
+\begin_layout Enumerate
+Removal of stop words is not necessary as they also have a sentiment value
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Build word dictionary
+\end_layout
+
+\begin_layout Enumerate
+All happy moments are tokenized and stored in a file.
+ so we don't have to tokenize again and again.
+\end_layout
+
+\begin_layout Subsection
+Task 1 Results
+\end_layout
+
+\begin_layout Standard
+We generated Word clouds for some sections of population and analyzed them
+ to get some results.(We can generate wordcloud for any section using query
+ builder.
+ Some of results are shown here)
+\end_layout
+
+\begin_layout Subsubsection
+Different Age Groups
+\end_layout
+
+\begin_layout Enumerate
+18 - 25 years
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename AG18to24.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+At this age major source of happiness of people are from friends, watching
+ or playing games, success in work etc.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+25 - 45 years
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename AG24to45.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For this age group we have words like son, daughter, wife which was absent
+ from above age group.
+ As seen friends still play a major role in determining happiness but it's
+ count is less as compared to before.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+45 - 60 years 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename AG45to60.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reasons like Husband, Wife, Daughter and Son (family) becomes major source
+ of happiness.
+ People find happiness in spending time and sharing love with family and
+ dog.
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Based on Gender
+\end_layout
+
+\begin_layout Enumerate
+Male
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename GenderM.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Things that made a man happy were friend, work, wife, playing, dinner, night,
+ girlfriend.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Female
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename GenderF.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Things that make a woman happy were friend, daughter, son, husband, work,
+ love.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Notice that happiness among man and woman are substantially different.
+\end_layout
+
+\begin_layout Subsubsection
+Based on Marital status
+\end_layout
+
+\begin_layout Enumerate
+Married
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename Married.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Things that makes married people happy are friend, family, work, time, daughter,
+ son, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Single
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename single.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Based on nationality
+\end_layout
+
+\begin_layout Enumerate
+India
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename India.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+USA
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename USA.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Friends and family are common source of happiness.
+ words like dog, dinner, game etc.
+ don't appear for Indians.
+ Words like brother, sister, movie don't appear for Americans.
+\end_layout
+
+\begin_layout Subsubsection
+Based on Reflection Period 
+\end_layout
+
+\begin_layout Enumerate
+24 hours 
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted14.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+3 months
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted15.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Words like birthday, bought don't appear for 24 h for obvious reasons.
+ But these two have a lot of similarities.
+\end_layout
+
+\begin_layout Subsubsection
+Another Word cloud 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted24.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These are happy words related to affection for Indians where son occurs
+ pretty much often than daughter.
+\end_layout
+
+\begin_layout Subsection
+Implementation of Task 2 
+\end_layout
+
+\begin_layout Standard
+LSTM model was trained and predictions were stored in a csv file name after_pred
+iction.csv.
+ Prediction accuracy 80.3 % was achieved which is good considering little
+ ambiguity in various happy moments.
+ for example : I was happy because we celebrated my mom's birthday yesterday,
+ this can be affection as well as enjoy the moment.
+ We had less training data, accuracy can be improved by increasing training
+ data size.
+\end_layout
+
+\begin_layout Standard
+Our Prediction results on some data is shown below
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted17.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Implementation of Task 3
+\end_layout
+
+\begin_layout Standard
+Applying the above algorithm to rate sentences using contextual valence
+ shifters on our happydb, we get the following result:
+\end_layout
+
+\begin_layout Enumerate
+Arranging with most positive first
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted18.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Test cases:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Presuppositional words:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted19.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Intensifiers:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted20.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Negatives:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted21.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Connectors:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Graphics
+	filename pasted22.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Section
+Contribution:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Akshat Choube : 
+\series default
+Problem formulation, literature survey on classification of sentences, LSTMs,
+ Context valence shifters.
+ Designing Query Builder and Analyzer, Training LSTM and optimizing code.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Harsh Yadav: 
+\series default
+Problem formulation, literature survey on scoring sentences, syn-sets of
+ a word, SentiWordNet, POS tagging, context valence shifters.
+ Designing and implementing Algorithm for assigning score to sentences.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Chirag: 
+\series default
+Data collection, literature survey on similar work done in past eg.
+ Italian tweets, preprocessing of data , analyzing Word clouds and drawing
+ conclusions, found bugs and suggested improvements.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+We find happiness in daily trivial and fundamental activities which motivates
+ us to move further in life.
+ Thus performing the tasks planned for this project made us understand psycholog
+y of happiness better and made us understand true sources of various kinds
+ of happiness.
+ On the technical side, this project introduced us to state of art NLP technique
+s and deep learning.
+\end_layout
+
+\begin_layout Section
+References :
+\end_layout
+
+\begin_layout Enumerate
+HappyDB: A Corpus of 100,000 Crowdsourced Happy Moments : Link : https://arxiv.or
+g/pdf/1801.07746.pdf 
+\end_layout
+
+\begin_layout Enumerate
+Predicting happiness: user interactions and sentiment analysis in an online
+ travel forum : Link : https://link.springer.com/content/pdf/10.1007%2Fs40558-017-0
+079-2.pdf 
+\end_layout
+
+\begin_layout Enumerate
+Sequence Classification with LSTM Recurrent Neural Networks in Python with
+ Keras .
+ Link: https://machinelearningmastery.com/sequence-classification-lstm-recurrent-
+neural-networks-python-keras/
+\end_layout
+
+\begin_layout Enumerate
+Learning Word Vectors for Sentiment Analysis by Andrew L.
+ Maas, Raymond E.
+ Daly, Peter T.
+ Pham, Dan Huang,Andrew Y.
+ Ng, and Christopher Potts 
+\end_layout
+
+\begin_layout Enumerate
+Measuring Similarity between sentences by Thanh Ngoc Dao (thanh.dao@gmx.net)
+ , Troy Simpson (troy@ebswift.com) 
+\end_layout
+
+\begin_layout Enumerate
+Bag-of-words model : Wikipedia 
+\end_layout
+
+\begin_layout Enumerate
+Contextual Valence Shifters by Livia Polanyi and Annie Zaenen.
+\end_layout
+
+\end_body
+\end_document
